@@ -39,6 +39,7 @@ question_bank = {
 
 def main():
     try:
+        score = 0
         print('Welcome to my Triva Quiz program!Topic options are: ')                         
         for k,v in question_bank.items(): # reads the question bank key names and print for user to select one.
             print(k)
@@ -47,6 +48,7 @@ def main():
         questions_for_topic = question_bank[selected_topic] # list of questions.
         quiz_answers = question_bank[selected_topic] # list of correct answers
         get_quiz(questions_for_topic, quiz_answers)
+        outputs(score)
         #outputs(selected_topic) 
     except Exception as e:
       print(e) 
@@ -59,33 +61,43 @@ def get_input(selected_topic):
         
     return selected_topic   
 
-def get_quiz(questions_for_topic, quiz_answers):
+def get_quiz(questions_for_topic, quiz_answers):# argumants needed to setup questions and answers.
+    #variables set to use an loop through questions answers. localized function variables. 
     quiz_questions = questions_for_topic['questions']  # list of question strings
     quiz_answers = questions_for_topic['correct_answers']  # list of correct answer
-    #print(quiz_questions)  
-    score = 0  
+    score = 0  #initalize score for tracking users total score. set to zero at start of quiz.
     for question, correct_answer in zip(quiz_questions, quiz_answers):        
         print(question) 
                     # todo ask user question 
         users_answer = input('enter your answer here: ')
         if users_answer.lower() == correct_answer.lower():   
             score +=1
-            print(f'correct, {score}')        
+            print(f'correct, {score} point added.')        
         else:
             print(f'Oops, sorry that was incorrect answer.')
-    print('End of quiz!')# simple note that quiz has ended. total good byt message follows
-    print(f'Your total score on  questions is {score} out of 3.')
-    if score == 3:
-            print('You got all the answers correct!')
+    # print('End of quiz!')# simple note that quiz has ended. total good byt message follows
+    # print(f'Your total score in Quiz Triva is {score} out of 3.')
+    # if score == 3:
+    #         print('You got all the answers correct!')
     # extra statement to congratulate user on a well played game, 
     # possible to give extra points if all 3 correct
+    return score
+def outputs(score):
+    score = 0
+    print('End of quiz!')# simple note that quiz has ended. total good byt message follows
+    print(f'Your total score in Quiz Triva is {score} out of 3.')
+    if score == 3:
+            print('You got all the answers correct! See you next time')
+    # extra statement to congratulate user on a well played game, 
+    # possible to give extra points if all 3 correct
+    
 
-def restart():
-    restart = input('Your select is not in the list. Would you like to select one from the list? Enter y or n: ') #requested User input to play again
-    if restart.lower() == 'y' or 'yes':
+def restart():    #requested User input to play again. gets used when topic other than the ones listed is entered by the user.
+    restart = input('Your entery was not in the list of Topics. Would you like to select one from the list? Enter y or n: ') 
+    if restart.lower() == 'y':
         main()
     else:
-        print('thanks for playing!' ) #good bye message  
-     
+        print('thanks for playing!') #good bye message               
+
 main() # call main to start /or restart program.    
 
