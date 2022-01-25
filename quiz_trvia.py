@@ -3,94 +3,89 @@ version one
  A quiz program. written for student editing """
 
 #data structue Dicionary to hold data that can be interchanged. May have to rethink the my list names. 
-question_bank = {"art": {"questions": 
-["Who painted the Mona Lisa?","What precious stone is used to make the artist\'s pigment ultramarine?",
-"Anish Kapoor\'s bean-shaped Cloud Gate scuplture is a landmark of which city?"],
-"correct_answers" : ["Leonardo Da Vinci","Lapiz lazuli","Chicago"]},
-"Space": {"questions":
-["Which planet is closest to the sun?", 
-"Which planet spins in the opposite direction to all the others in the solar system?",
-"How many moons does Mars have?"],
-"correct_answers": ["Mercury" ,"Venus","two"]}}
+
+question_bank = {   
+"art": 
+        {   
+        "questions": 
+        [
+        "Who painted the Mona Lisa?",
+        "What precious stone is used to make the artist\'s pigment ultramarine?",
+        "Anish Kapoor\'s bean-shaped Cloud Gate scuplture is a landmark of which city?"
+        ],
+        "correct_answers" : 
+        [
+        "Leonardo Da Vinci",
+        "Lapiz lazuli",
+        "Chicago"
+        ]
+        },
+"space": 
+        {   
+        "questions" :
+        [
+        "Which planet is closest to the sun?", 
+        "Which planet spins in the opposite direction to all the others in the solar system?",
+        "How many moons does Mars have?"
+        ],
+        "correct_answers" : 
+        [
+        "Mercury",
+        "Venus",
+        "2"
+        ]
+        }
+}
 
 def main():
-    try:     
-        total_score = 0   #count the score of coorect answers.
-        users_answer = [] #collect the users acutal inputs.
-        #question_bank["hockey"] = "what do the letters NHL stand? "#add new pair to existing dictionary.
-        print('Welcome to my Triva Quiz program!Topic options are: ')
+    try:
+        print('Welcome to my Triva Quiz program!Topic options are: ')                         
         for k,v in question_bank.items(): # reads the question bank key names and print for user to select one.
             print(k)
-        selected_for_topic = input('Please choose a topic, what is your trvia selection? ')# simple instructions to start.
+        selected_topic = input('Please choose a trvia selection topic? ')# simple instructions to start.
+        get_input(selected_topic)# simple instructions to start.
+        questions_for_topic = question_bank[selected_topic] # list of questions.
+        quiz_answers = question_bank[selected_topic] # list of correct answers
+        get_quiz(questions_for_topic, quiz_answers)
+        #outputs(selected_topic) 
+    except Exception as e:
+      print(e) 
         
-        if selected_for_topic in question_bank.keys(): # vaildating that they select one of the choices.                     
-            print(f'{selected_for_topic} is your choice')# simple instructions to help show users what is happening.
-            question_bank_list = list(question_bank.values())
+def get_input(selected_topic):  
+    if selected_topic not in question_bank.keys(): # vaildating that they select one of the choices.                     
+        restart()
+    else:
+        print(f'{selected_topic} is your choice')# simple instructions to help show users what is happening.
+        
+    return selected_topic   
 
-            #creating art question list to loop over, use for loop. Maybe this could be more generic name/
-            art_question_list = [question_bank_list[0]["questions"][0], 
-            question_bank_list[0]["questions"][1],
-            question_bank_list[0]["questions"][2]] 
+def get_quiz(questions_for_topic, quiz_answers):
+    quiz_questions = questions_for_topic['questions']  # list of question strings
+    quiz_answers = questions_for_topic['correct_answers']  # list of correct answer
+    #print(quiz_questions)  
+    score = 0  
+    for question, correct_answer in zip(quiz_questions, quiz_answers):        
+        print(question) 
+                    # todo ask user question 
+        users_answer = input('enter your answer here: ')
+        if users_answer.lower() == correct_answer.lower():   
+            score +=1
+            print(f'correct, {score}')        
+        else:
+            print(f'Oops, sorry that was incorrect answer.')
+    print('End of quiz!')# simple note that quiz has ended. total good byt message follows
+    print(f'Your total score on  questions is {score} out of 3.')
+    if score == 3:
+            print('You got all the answers correct!')
+    # extra statement to congratulate user on a well played game, 
+    # possible to give extra points if all 3 correct
 
-            #creating art question answer list to loop over, use for loop.Maybe this could be more generic name/
-            art_question_answer_list = [question_bank_list[0]["correct_answers"][0], 
-            question_bank_list[0]["correct_answers"][1],
-            question_bank_list[0]["correct_answers"][2]]
+def restart():
+    restart = input('Your select is not in the list. Would you like to select one from the list? Enter y or n: ') #requested User input to play again
+    if restart.lower() == 'y' or 'yes':
+        main()
+    else:
+        print('thanks for playing!' ) #good bye message  
+     
+main() # call main to start /or restart program.    
 
-            for question in art_question_list: #for loop loops through let without len function.
-                print(question)    #variable question will start at 0 count of list.         
-                users_answer = input('enter your answer here: ')  #if users_answer in art_question_answer_list:                           
-                if  users_answer in art_question_answer_list:                
-                    print(f'that was correct, for each correct answer you earn one point,'
-                    ' your next question will load now.') #point of referance to user
-                    total_score += 1   #score total incrementing
-                else:
-                    print(f'Oops, sorry that was incorrect answer.')
-                    #was working on loop here to give correct answer for each loop but keep getting all three answers.
-            print('End of quiz!')# simple note that quiz has ended. total good byt message follows
-            print(f'Your total score on {selected_for_topic} questions is {total_score} out of 3.')
-             # extra statement to congratulate user on a well played game, possible to give extra points if all 3 correct.    
-            if total_score == 3:
-                print('You got all the answers correct!') 
-        else: #starting spce triva. Haven't added additional Hockey category questions noteed about.
-            print(f'You selected space for your triva quesions.')
-            question_bank_list = list(question_bank.values())
-                #art_questions = question_bank_list[0]["questions"][0]
-                # print(art_questions)
-            space_question_list = [question_bank_list[1]["questions"][0], 
-            question_bank_list[1]["questions"][1],
-            question_bank_list[1]["questions"][2]] 
-
-            space_question_answer_list = [question_bank_list[1]["correct_answers"][0], 
-            question_bank_list[1]["correct_answers"][1],
-            question_bank_list[1]["correct_answers"][2]]
-           
-            for question in space_question_list: #for loop loops through let without len function.
-                print(question) 
-                users_answer = input('enter your answer here: ')  
-                    #if users_answer in art_question_answer_list:         
-                if users_answer in space_question_answer_list:                                 
-                    print(f'that was correct, for each correct answer you earn one point,'
-                    'your next question will load now or game will end.') 
-                    total_score += 1 # point total socre increments one through loop                    
-                else: 
-                    print(f'Oops, sorry that was incorrect answer.') #incorrect statement to user.
-                    # needed to wotk out giving correct answer here possible.
-            print('End of quiz!') #closing note
-            print(f'Your total score on {selected_for_topic} questions is {total_score} out of 3.')
-            # extra statement to congratulate user on a well played game, possible to give extra points if all 3 correct.
-            if total_score == 3:
-                print('You got all the answers correct!')        
-    except:     #validation error handling for 
-            print('Opps we didn\'t get the question loaded please pause.')  
-            #possible error for service outage.     
-       
-main() # call main to start /or restart program.
-
-# print(f'Your sletion {selection_for_topic} is not a choice, please try agian, select from the list.')
-
-            # if selection_for_topic not in question_bank.keys():
-            #     print(f'Your seletion {selection_for_topic} is not a choice, please try agian, select from the list.')
-            #     print('OK, let\'s play Trvia, make a new slection')
-            #     restart = main()         #will return to start with list to select.
-            # else: 
