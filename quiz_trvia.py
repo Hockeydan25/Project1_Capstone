@@ -14,21 +14,23 @@
  """
 
 #data structure, Dicionary to hold data retieved and used to run program. readability with { [ , spacing. 
-question_bank = {   
+question_bank = {      # indentation is very nice to improve readability, use multiple levels for nested data structures. 
 "art": 
         {   
-        "questions": 
-        [
-        "Who painted the Mona Lisa?",
-        "What precious stone is used to make the artist\'s pigment ultramarine?",
-        "Anish Kapoor\'s bean-shaped Cloud Gate scuplture is a landmark of which city?"
-        ],
-        "correct_answers" : 
-        [
-        "Leonardo Da Vinci",
-        "Lapiz lazuli",
-        "Chicago"
-        ]
+           "questions": 
+            [
+                "Who painted the Mona Lisa?",
+                "What precious stone is used to make the artist\'s pigment ultramarine?",
+                "Anish Kapoor\'s bean-shaped Cloud Gate scuplture is a landmark of which city?",
+                "What city is the MIA gallery in?"   # extra question for testing results output
+            ],
+            "correct_answers" : 
+            [
+                "Leonardo Da Vinci",
+                "Lapiz lazuli",
+                "Chicago",
+                "Minneapolis"
+            ]
         },
 "space": 
         {   
@@ -49,28 +51,30 @@ question_bank = {
 
 def main():
 
-        print('Welcome to my Triva Quiz program!Topic options are: ')                         
+        print('Welcome to my Triva Quiz program!Topic options are: ')    
+        # use descriptive variable names, so you don't need to explain what the k and v variables are                      
         for k,v in question_bank.items(): # reads the question bank key names and print for user to select one.
             print(k)        
-        selected_topic= get_input()# simple instructions to start.
+        selected_topic= get_trivia_topic()# simple instructions to start.
         questions_for_topic = question_bank[selected_topic] # variable to hold list of questions from dictionary question_bank.
         quiz_answers = question_bank[selected_topic] # variable to hold list of correct answers from dictinary question_bank.
-        score = get_quiz(questions_for_topic, quiz_answers)
-        outputs(score, selected_topic) 
+        score = play_quiz(questions_for_topic, quiz_answers)
+        display_results(score, selected_topic) 
         
-def get_input():  
+def get_trivia_topic():   # can you think of a better function name? The "input" in this program could be the topic, or a user's answer
     while True:
-        selected_topic = input('Please choose a trvia selection topic? ')
+        selected_topic = input('Please choose a trivia selection topic? ') # small typo
         # simple instructions to start, user selects a triva topic.
         # vaildating that they select one of the choices. will keep in While loop until uset types topic in list.        
-        if selected_topic not in question_bank.keys():                      
+        if selected_topic not in question_bank:  # .keys is correct but you can omit and it will check the keys by default.
             print('that was not in our choices') 
         else:
             print(f'{selected_topic} is your choice')
             # simple instructions to help show users selection is being used.        
             return selected_topic   
 
-def get_quiz(questions_for_topic, quiz_answers):# argumants needed to setup questions and answers.
+# is this function getting a quiz? Could you be more specific with the function name? 'play_quiz' or 'start_quiz' maybe? 
+def play_quiz(questions_for_topic, quiz_answers):# argumants needed to setup questions and answers.
     #variables set to use an loop through questions answers. localized function variables. 
     quiz_questions = questions_for_topic['questions']  # variables list of question strings.
     quiz_answers = questions_for_topic['correct_answers']  # variables list of correct answer.
@@ -79,19 +83,22 @@ def get_quiz(questions_for_topic, quiz_answers):# argumants needed to setup ques
         print(question) 
         #asking user question, to answer the question. 
         users_answer = input('enter your answer here: ') #variable and input function to prompt top user pregroam ready for there input.
-        if users_answer.lower()  == correct_answer.lower(): #need to accept any case and validate correct answer.   
-            score +=1  #point for correct answer.
-            print(f'correct, current points earned = {score}.')#staement that qustion  was answered with correct answer.         
+        if users_answer.lower() == correct_answer.lower(): #need to accept any case and validate correct answer.   
+            score += 1  #point for correct answer.
+            print(f'correct, current points earned = {score}.') #statement that question was answered with correct answer.         
         else:      #message that answer is incorrect, points earned given too.
             print(f'Oops, sorry that was incorrect answer, current points earned = {score}.')
             # could have a retry here to give user another try or add a hint to user to get correct anwser.
+            # note on retry - the main function should control retry and would call this function again to play again
     return score # returns score to main and outputs will use.
 
-    #outputs dispplays end messaging to user with score and goodbye.
-def outputs(score, selected_topic):      
+#outputs dispplays end messaging to user with score and goodbye.
+# use a more specific name 
+def display_results(score, selected_topic):      
     print('End of quiz!')# simple note that quiz has ended. total good byt message follows
-    print(f'Your total score today in Quiz Triva is {score} out of 3.')
-    if score == 3:
+    total_questions_for_topic = len(question_bank[selected_topic]['questions'])
+    print(f'Your total score today in Quiz Triva is {score} out of {total_questions_for_topic}.')
+    if score == total_questions_for_topic:  # what is there are more or less than 3? 
             print(f'You got all the Quiz Triva answers on {selected_topic} Triva correct! See you next time!')
     # extra statement to congratulate user on a well played game, 
     # possible to give extra points if all 3 correct
